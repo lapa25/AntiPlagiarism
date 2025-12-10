@@ -1,0 +1,88 @@
+services:
+  filestoring-db:
+    image: postgres:16
+    container_name: filestoring-db
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: filestoringdb
+    volumes:
+      - filestoring_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d filestoringdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  fileanalysis-db:
+    image: postgres:16
+    container_name: fileanalysis-db
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: fileanalysisdb
+    volumes:
+      - fileanalysis_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d fileanalysisdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  filestoring-service:
+    build:
+      context: ./FileStoringService
+      dockerfile: Dockerfile       
+    container_name: filestoring-service
+    ports:
+      - "5001:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      CONNECTIONSTRINGS__DEFAULTCONNECTION: Server=filestoring-db:5432;Database=filestoringdb;User Id=postgres;Password=postgres;
+      FILESTORAGE__ROOTPATH: /data/works
+    depends_on:
+      filestoring-db:
+        condition: service_healthy
+    volumes:
+      - filestoring_files:/data/works
+
+  fileanalysis-service:
+    build:
+      context: ./FileAnalysisService
+    container_name: fileanalysis-service
+    ports:
+      - "5002:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      CONNECTIONSTRINGS__DEFAULTCONNECTION: Server=fileanalysis-db:5432;Database=fileanalysisdb;User Id=postgres;Password=postgres;
+      FILESTORINGSERVICE__BASEURL: http://filestoring-service:8080
+    depends_on:
+      fileanalysis-db:
+        condition: service_healthy
+      filestoring-service:
+        condition: service_started
+
+  apigateway:
+    build:
+      context: ./ApiGateway
+    container_name: apigateway
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      FILESTORINGSERVICE__BASEURL: http://filestoring-service:8080
+      FILEANALYSISSERVICE__BASEURL: http://fileanalysis-service:8080
+    depends_on:
+      filestoring-service:
+        condition: service_started
+      fileanalysis-service:
+        condition: service_started
+
+volumes:
+  filestoring_db_data:
+  fileanalysis_db_data:
+  filestoring_files:

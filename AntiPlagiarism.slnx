@@ -1,0 +1,25 @@
+<Solution>
+  <Folder Name="/ApiGateway/">
+    <File Path="../../../Downloads/.editorconfig" />
+    <Project Path="ApiGateway/ApiGateway.Host/ApiGateway.Host.csproj" />
+    <Project Path="ApiGateway/ApiGateway.Infrastructure/ApiGateway.Infrastructure.csproj" Id="c7c2ef62-d2bb-4865-b6ac-ed74349c919a" />
+    <Project Path="ApiGateway/ApiGateway.Presentation/ApiGateway.Presentation.csproj" Id="3288bf21-1fd2-4c37-a7fc-e51e24ca8d8a" />
+    <Project Path="ApiGateway/ApiGateway.UseCases/ApiGateway.UseCases.csproj" Id="9e440998-2bf7-4b3c-8a14-bfc994e2ca10" />
+  </Folder>
+  <Folder Name="/FileAnalysisService/">
+    <File Path="../../../Downloads/.editorconfig" />
+    <Project Path="FileAnalysisService/FileAnalysisService.Entities/FileAnalysisService.Entities.csproj" />
+    <Project Path="FileAnalysisService/FileAnalysisService.Host/FileAnalysisService.Host.csproj" />
+    <Project Path="FileAnalysisService/FileAnalysisService.Infrastructure/FileAnalysisService.Infrastructure.csproj" />
+    <Project Path="FileAnalysisService/FileAnalysisService.Presentation/FileAnalysisService.Presentation.csproj" />
+    <Project Path="FileAnalysisService/FileAnalysisService.UseCases/FileAnalysisService.UseCases.csproj" />
+  </Folder>
+  <Folder Name="/FileStoringService/">
+    <File Path="../../../Downloads/.editorconfig" />
+    <Project Path="FileStoringService/FileStoringService.Entities/FileStoringService.Entities.csproj" />
+    <Project Path="FileStoringService/FileStoringService.Host/FileStoringService.Host.csproj" />
+    <Project Path="FileStoringService/FileStoringService.Infrastructure/FileStoringService.Infrastructure.csproj" />
+    <Project Path="FileStoringService/FileStoringService.Presentation/FileStoringService.Presentation.csproj" />
+    <Project Path="FileStoringService/FileStoringService.UseCases/FileStoringService.UseCases.csproj" />
+  </Folder>
+</Solution>
